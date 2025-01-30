@@ -1,12 +1,14 @@
 version = 2
-root="/opt/containerd"
 imports = ["/etc/containerd/conf.d/*.toml"]
 
 [plugins]
   [plugins."io.containerd.grpc.v1.cri"]
-    sandbox_image = "k8s.gcr.io/pause:3.6"
-    [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
-      runtime_type = "io.containerd.runc.v2"
-      [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
-        BinaryName = "/opt/bin/runc"
-        SystemdCgroup = true
+    sandbox_image = "registry.k8s.io/pause:3.9"
+    enable_unprivileged_ports = true
+    enable_unprivileged_icmp = true
+  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+    runtime_type = "io.containerd.runc.v2"
+  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+    SystemdCgroup = true
+  [plugins."io.containerd.grpc.v1.cri".registry]
+    config_path = "/etc/containerd/certs.d"
